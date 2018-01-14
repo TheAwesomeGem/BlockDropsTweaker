@@ -1,0 +1,16 @@
+[
+{
+  "modid": "blockdropstweaker",
+  "name": "Block Drops Tweaker",
+  "description": "Allows you to tweak Block Drops for any blocks in just a minute.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["TheAwesomeGem"],
+  "credits": "Forge Team and CraftTweaker for some helper methods on commands.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+
+version = "2.2"
+group = "net.theawesomegem.blockdropstweaker"
+archivesBaseName = "BlockDropsTweaker-1.12.2"
+
+repositories {
+    maven {
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        url 'https://maven.mcmoddev.com/'
+    }
+    maven {
+        url = "http://maven.covers1624.net"
+    }
+}
+
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "1.12.2-14.23.1.2568"
+    runDir = "run"
+    mappings = "snapshot_20171003"
+}
+
+dependencies {
+
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
