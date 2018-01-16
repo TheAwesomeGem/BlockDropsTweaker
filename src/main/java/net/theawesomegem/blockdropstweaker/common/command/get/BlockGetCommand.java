@@ -67,6 +67,7 @@ public class BlockGetCommand extends BlockDropsBaseCommand
         player.sendMessage(ChatUtil.getNormalMessage("Silk Touch=" + (blockDropData.allowsilktouch)));
         player.sendMessage(ChatUtil.getNormalMessage("Always Silk Touch=" + (blockDropData.dropsilktouchalways)));
         player.sendMessage(ChatUtil.getNormalMessage("Y-Level=" + (blockDropData.minYLevel + ":" + blockDropData.maxYLevel)));
+        player.sendMessage(ChatUtil.getNormalMessage("Exp=" + (blockDropData.minExp + ":" + blockDropData.maxExp)));
         player.sendMessage(ChatUtil.getNormalMessage("Tools Blacklist=" + (blockDropData.toolsBlacklist)));
         player.sendMessage(ChatUtil.getNormalMessage("Biomes Blacklist=" + (blockDropData.biomeBlacklist)));
         player.sendMessage(ChatUtil.getNormalMessage("Gamestages Blacklist=" + (blockDropData.gamestageBlacklist)));

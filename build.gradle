@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 
-version = "2.2"
+version = "2.3"
 group = "net.theawesomegem.blockdropstweaker"
 archivesBaseName = "BlockDropsTweaker-1.12.2"
 

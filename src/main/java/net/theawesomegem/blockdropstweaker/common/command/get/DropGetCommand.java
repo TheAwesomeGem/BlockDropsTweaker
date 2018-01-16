@@ -90,6 +90,7 @@ public class DropGetCommand extends BlockDropsBaseCommand
         }
 
         player.sendMessage(ChatUtil.getNormalMessage("Y-Level=" + (dropData.minYLevel + ":" + dropData.maxYLevel)));
+        player.sendMessage(ChatUtil.getNormalMessage("Exp=" + (dropData.minExp + ":" + dropData.maxExp)));
         player.sendMessage(ChatUtil.getNormalMessage("Tools Blacklist=" + (dropData.toolsBlacklist)));
         player.sendMessage(ChatUtil.getNormalMessage("Biomes Blacklist=" + (dropData.biomeBlacklist)));
         player.sendMessage(ChatUtil.getNormalMessage("Gamestages Blacklist=" + (dropData.gamestageBlacklist)));

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.theawesomegem.blockdropstweaker.common.blockconfig.BlockDropData;
@@ -19,8 +20,11 @@ import net.theawesomegem.blockdropstweaker.common.blockconfig.FortuneQuantityDat
 import net.theawesomegem.blockdropstweaker.hook.GameStageHook;
 import net.theawesomegem.blockdropstweaker.hook.TConstructHook;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 /**
@@ -28,6 +32,27 @@ import java.util.Random;
  */
 public class EventHandlerCommon
 {
+    @SubscribeEvent
+    public void onBreakBlock(BlockEvent.BreakEvent e)
+    {
+        World world = e.getWorld();
+
+        if(world.isRemote)
+            return;
+
+        IBlockState blockState = e.getState();
+        Block block = blockState.getBlock();
+        String blockID = block.getRegistryName().toString();
+        int metadata = block.getMetaFromState(blockState);
+
+        BlockDropData blockDropData = ConfigurationHandler.getBlockDropData(block, blockID, metadata);
+
+        if(blockDropData == null)
+            return;
+
+        e.setExpToDrop(0);
+    }
+
     @SubscribeEvent
     public void onHarvestBlock(HarvestDropsEvent e)
     {
@@ -52,6 +77,7 @@ public class EventHandlerCommon
         String blockID = block.getRegistryName().toString();
         int metadata = block.getMetaFromState(blockState);
         Random random = world.rand;
+        int exp = 0;
 
         BlockDropData blockDropData = ConfigurationHandler.getBlockDropData(block, blockID, metadata);
 
@@ -167,12 +193,22 @@ public class EventHandlerCommon
 
         e.getDrops().clear();
 
-        dropList.addAll(getDrops(random, blockDropData, fortuneLevel, toolUsed, yPos, biomeID, e.getHarvester()));
+        Entry<List<ItemStack>, Integer> dropExpEntry = getDrops(random, blockDropData, fortuneLevel, toolUsed, yPos, biomeID, e.getHarvester());
+
+        dropList.addAll(dropExpEntry.getKey());
 
         int perc = MathHelper.getInt(random, 0, 100);
 
         if(chance >= perc)
         {
+            exp += MathHelper.getInt(world.rand, blockDropData.minExp, blockDropData.maxExp);
+            exp += dropExpEntry.getValue();
+
+            if(exp > 0)
+            {
+                block.dropXpOnBlockBreak(world, e.getPos(), exp);
+            }
+
             e.getDrops().addAll(dropList);
         }
         else if(blockDropData.dropsilktouchalways)
@@ -351,12 +387,14 @@ public class EventHandlerCommon
         }
     }
 
-    private List<ItemStack> getDrops(Random random, BlockDropData blockDropData, int fortune, ItemStack heldItem, int yLevel, String biomeID, EntityPlayer harvester)
+    private Map.Entry<List<ItemStack>, Integer> getDrops(Random random, BlockDropData blockDropData, int fortune, ItemStack heldItem, int yLevel, String biomeID, EntityPlayer harvester)
     {
         List<ItemStack> drops = new ArrayList<>();
 
         if(blockDropData.dropdatalist.isEmpty())
-            return new ArrayList<>();
+            return new SimpleEntry<>(new ArrayList<>(), 0);
+
+        int exp = 0;
 
         for(DropData dropData : blockDropData.dropdatalist)
         {
@@ -401,10 +439,12 @@ public class EventHandlerCommon
             if(!hasNBT(heldItem, blockDropData))
                 continue;
 
+            exp += MathHelper.getInt(random, dropData.minExp, dropData.maxExp);
+
             drops.add(new ItemStack(item, quantity, dropData.metadata));
         }
 
-        return drops;
+        return new SimpleEntry<>(drops, exp);
     }
 
     private boolean isToolAllowed(ItemStack toolItem, DropData dropData)

@@ -98,6 +98,9 @@ public class ChatUtil
 
     public static List<String> getOreDictOfItem(ItemStack stack)
     {
+        if(stack.isEmpty())
+            return new ArrayList<>();
+
         int[] ids = OreDictionary.getOreIDs(stack);
         List<String> names = new ArrayList<>();
 

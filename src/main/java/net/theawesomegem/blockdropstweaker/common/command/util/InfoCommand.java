@@ -1,5 +1,6 @@
 package net.theawesomegem.blockdropstweaker.common.command.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandException;
@@ -37,10 +38,13 @@ public class InfoCommand extends BlockDropsBaseCommand
     @Override
     protected void onCommand(MinecraftServer server, EntityPlayer player, String[] args) throws CommandException
     {
-        Item item = null;
+        Item blockItem = null;
         boolean oreDictionary = args.length >= 1 && args[0].equalsIgnoreCase("ore");
 
         ItemStack itemStack = player.getHeldItemMainhand();
+        String blockId = null;
+        int metadata = 0;
+        boolean itemOnHand = false;
 
         if(itemStack.isEmpty())
         {
@@ -52,29 +56,36 @@ public class InfoCommand extends BlockDropsBaseCommand
 
                 if(!blockState.getMaterial().equals(Material.AIR))
                 {
-                    item = Item.getItemFromBlock(blockState.getBlock());
+                    Block block = blockState.getBlock();
+                    blockId = block.getRegistryName().toString();
+                    blockItem = Item.getItemFromBlock(block);
+                    metadata = block.getMetaFromState(blockState);
                 }
             }
         }
         else
         {
-            item = itemStack.getItem();
+            itemOnHand = true;
+            blockItem = itemStack.getItem();
         }
 
-        if(item == null)
+
+        if(itemOnHand)
         {
-            player.sendMessage(ChatUtil.getNormalMessage("Could not find the item/block."));
-
-            return;
+            blockId = ChatUtil.getItemStackID(blockItem);
         }
 
-        ChatUtil.copyMessage(player, ChatUtil.getItemStackID(item));
+        ChatUtil.copyMessage(player, blockId);
         player.sendMessage(ChatUtil.EMPTY_TEXTMESSAGE);
-        player.sendMessage(ChatUtil.getNormalMessage("'" + ChatUtil.getItemStackID(item) + "' has been copied."));
+        player.sendMessage(ChatUtil.getNormalMessage("Block is " + blockId + " with metadata " + metadata));
+        player.sendMessage(ChatUtil.getNormalMessage("'" + blockId + "' has been copied."));
 
         if(oreDictionary)
         {
-            List<String> oreDictEntries = ChatUtil.getOreDictOfItem(new ItemStack(item));
+            if(blockItem == null)
+                return;
+
+            List<String> oreDictEntries = ChatUtil.getOreDictOfItem(new ItemStack(blockItem));
 
             player.sendMessage(ChatUtil.getNormalMessage("Ore Dictionary:"));
             player.sendMessage(ChatUtil.getNormalMessage("======="));

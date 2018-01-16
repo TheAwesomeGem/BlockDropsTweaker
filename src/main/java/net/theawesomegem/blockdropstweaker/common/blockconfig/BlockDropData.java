@@ -19,6 +19,8 @@ public class BlockDropData
     public List<String> biomes = new ArrayList<>();
     public int minYLevel = 0;
     public int maxYLevel = 256;
+    public int minExp = 0;
+    public int maxExp = 0;
     public boolean gamestageBlacklist = true;
     public boolean gamestageAll = true;
     public List<String> gameStageList = new ArrayList<>();
@@ -52,6 +54,8 @@ public class BlockDropData
         blockDropData.dropdatalist = new ArrayList<>(this.dropdatalist);
         blockDropData.minYLevel = this.minYLevel;
         blockDropData.maxYLevel = this.maxYLevel;
+        blockDropData.minExp = this.minExp;
+        blockDropData.maxExp = this.maxExp;
         blockDropData.biomeBlacklist = this.biomeBlacklist;
         blockDropData.biomes = new ArrayList<>(this.biomes);
         blockDropData.gamestageBlacklist = this.gamestageBlacklist;

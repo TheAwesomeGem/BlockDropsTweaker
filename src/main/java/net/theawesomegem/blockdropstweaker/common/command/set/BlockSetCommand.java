@@ -154,6 +154,40 @@ public class BlockSetCommand extends BlockDropsTreeBaseCommand
                 return false;
             }
 
+            case "exp":
+            {
+                String[] expInfo = value.split(":");
+
+                if(expInfo.length < 2)
+                {
+                    player.sendMessage(ChatUtil.getNormalMessage("Please use the format 'min:max'. For example '0:100' for 0 to 100 experience points"));
+
+                    return false;
+                }
+
+                int minExp;
+                int maxExp;
+
+                try
+                {
+                    minExp = Integer.parseInt(expInfo[0]);
+                    maxExp = Integer.parseInt(expInfo[1]);
+                }
+                catch (NumberFormatException e)
+                {
+                    player.sendMessage(ChatUtil.getNormalMessage("'exp' can only be a whole number."));
+
+                    return false;
+                }
+
+                blockDropData.minExp = minExp;
+                blockDropData.maxExp = maxExp;
+
+                player.sendMessage(ChatUtil.getNormalMessage("'exp' set to '" + minExp + ":" + maxExp + "'"));
+
+                return false;
+            }
+
             case "toolblacklist":
             {
                 blockDropData.toolsBlacklist = Boolean.parseBoolean(value);
@@ -256,6 +290,7 @@ public class BlockSetCommand extends BlockDropsTreeBaseCommand
             tabListItems.add("alwayssilktouch");
             tabListItems.add("chance");
             tabListItems.add("ylevel");
+            tabListItems.add("exp");
             tabListItems.add("toolblacklist");
             tabListItems.add("biomeblacklist");
             tabListItems.add("gamestageblacklist");

@@ -32,6 +32,8 @@ public class DropData
     public List<String> biomes = new ArrayList<>();
     public int minYLevel = 0;
     public int maxYLevel = 256;
+    public int minExp = 0;
+    public int maxExp = 0;
     public boolean gamestageBlacklist = true;
     public boolean gamestageAll = true;
     public List<String> gameStageList = new ArrayList<>();
@@ -55,6 +57,8 @@ public class DropData
         dropData.fortunequantitymap = new HashMap<>(this.fortunequantitymap);
         dropData.minYLevel = this.minYLevel;
         dropData.maxYLevel = this.maxYLevel;
+        dropData.minExp = this.minExp;
+        dropData.maxExp = this.maxExp;
         dropData.biomeBlacklist = this.biomeBlacklist;
         dropData.biomes = new ArrayList<>(this.biomes);
         dropData.gamestageBlacklist = this.gamestageBlacklist;
