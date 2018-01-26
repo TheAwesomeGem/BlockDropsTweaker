@@ -99,6 +99,7 @@ public class DropGetCommand extends BlockDropsBaseCommand
         player.sendMessage(ChatUtil.getNormalMessage("Traits Blacklist=" + (dropData.traitBlacklist)));
         player.sendMessage(ChatUtil.getNormalMessage("Enchants Blacklist=" + (dropData.enchantmentBlacklist)));
         player.sendMessage(ChatUtil.getNormalMessage("NBTs Blacklist=" + (dropData.nbtBlacklist)));
+        player.sendMessage(ChatUtil.getNormalMessage("Exclusive=" + (dropData.exclusive)));
     }
 
     @Override

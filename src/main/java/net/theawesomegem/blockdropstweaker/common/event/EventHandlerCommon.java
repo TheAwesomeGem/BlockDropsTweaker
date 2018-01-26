@@ -408,7 +408,6 @@ public class EventHandlerCommon
             if(fortuneQuantityData == null)
                 continue;
 
-            int quantity = MathHelper.getInt(random, fortuneQuantityData.minquantity, fortuneQuantityData.maxquantity);
             int chance = dropData.fortunechancemap.get(fortune);
             int perc = MathHelper.getInt(random, 1, 100);
 
@@ -439,9 +438,21 @@ public class EventHandlerCommon
             if(!hasNBT(heldItem, blockDropData))
                 continue;
 
+            int quantity = MathHelper.getInt(random, fortuneQuantityData.minquantity, fortuneQuantityData.maxquantity);
+            ItemStack itemStack = new ItemStack(item, quantity, dropData.metadata);
+
+            if(dropData.exclusive)
+            {
+                drops.clear();
+                drops.add(itemStack);
+                exp = MathHelper.getInt(random, dropData.minExp, dropData.maxExp);
+
+                break;
+            }
+
             exp += MathHelper.getInt(random, dropData.minExp, dropData.maxExp);
 
-            drops.add(new ItemStack(item, quantity, dropData.metadata));
+            drops.add(itemStack);
         }
 
         return new SimpleEntry<>(drops, exp);

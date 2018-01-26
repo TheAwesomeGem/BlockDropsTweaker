@@ -286,6 +286,16 @@ public class DropSetCommand extends BlockDropsTreeBaseCommand
 
                 return false;
             }
+
+            case "exclusive":
+            {
+                dropData.exclusive = Boolean.parseBoolean(value);
+
+                player.sendMessage(ChatUtil.getNormalMessage("'exclusive' set to '" + (dropData.exclusive) + "'"));
+
+
+                return false;
+            }
         }
 
         return false;
@@ -318,6 +328,7 @@ public class DropSetCommand extends BlockDropsTreeBaseCommand
             tabListItems.add("traitblacklist");
             tabListItems.add("enchantmentblacklist");
             tabListItems.add("nbtblacklist");
+            tabListItems.add("exclusive");
         }
 
         return getListOfStringsMatchingLastWord(args, tabListItems);

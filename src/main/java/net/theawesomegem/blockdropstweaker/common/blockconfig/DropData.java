@@ -45,6 +45,7 @@ public class DropData
     public List<String> enchantmentList = new ArrayList<>();
     public boolean nbtBlacklist = true;
     public List<String> nbtList = new ArrayList<>();
+    public boolean exclusive = false;
 
 
     public DropData duplicate()
@@ -72,6 +73,7 @@ public class DropData
         dropData.enchantmentList = new ArrayList<>(this.enchantmentList);
         dropData.nbtBlacklist = this.nbtBlacklist;
         dropData.nbtList = new ArrayList<>(this.nbtList);
+        dropData.exclusive = this.exclusive;
 
         return dropData;
     }
